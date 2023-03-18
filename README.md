@@ -2,7 +2,7 @@
 
 ** This project is still work in progress! **
 
-A Epic Online Services SDK binding for Go
+An Epic Online Services SDK binding for Go
 
 ## How to use
 
