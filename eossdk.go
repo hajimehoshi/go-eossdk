@@ -39,7 +39,9 @@ const (
 )
 
 const (
-	PLATFORM_OPTIONS_API_LATEST = 12
+	INITIALIZE_API_LATEST            = 4
+	PF_WINDOWS_ENABLE_OVERLAY_OPENGL = 0x00040
+	PLATFORM_OPTIONS_API_LATEST      = 12
 )
 
 type InitializeOptions struct {
