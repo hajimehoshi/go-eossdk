@@ -4,6 +4,7 @@
 package eossdk
 
 import (
+	"fmt"
 	"unsafe"
 
 	"golang.org/x/sys/windows"
@@ -39,7 +40,7 @@ var theDLL = &dll{
 }
 
 func _Initialize(options *_Initialize_Options) error {
-	if r, _ := theDLL.call("EOS_Initialize", uintptr(unsafe.Pointer(options))); r != _Success {
+	if r, _ := theDLL.call("EOS_Initialize", uintptr(unsafe.Pointer(options))); EResult(r) != Success {
 		return EResult(r)
 	}
 	return nil
@@ -52,9 +53,13 @@ func _Platform_Create(options *_Platform_Options) platform {
 	return platform(p)
 }
 
-func (p platform) CheckForLauncherAndRestart() error {
-	if r, _ := theDLL.call("EOS_Platform_CheckForLauncherAndRestart", uintptr(p)); r != _Success {
-		return EResult(r)
+func (p platform) CheckForLauncherAndRestart() (nochange bool, err error) {
+	switch r, _ := theDLL.call("EOS_Platform_CheckForLauncherAndRestart", uintptr(p)); EResult(r) {
+	case NoChange:
+		return true, nil
+	case Success:
+		return false, nil
+	default:
+		return false, fmt.Errorf("eossdk: CheckForLauncherAndRestart failed: %w", EResult(r))
 	}
-	return nil
 }

@@ -27,14 +27,15 @@ func boolToInt32(x bool) int32 {
 	return 0
 }
 
-type EResult int
+type EResult int32
 
 func (e EResult) Error() string {
 	return fmt.Sprintf("EOS_EResult(%d)", e)
 }
 
 const (
-	_Success = 0
+	Success  EResult = 0
+	NoChange EResult = 20
 )
 
 const (
@@ -138,7 +139,7 @@ type _Platform_RTCOptions struct {
 }
 
 type Platform interface {
-	CheckForLauncherAndRestart() error
+	CheckForLauncherAndRestart() (nochange bool, err error)
 }
 
 func NewPlatform(options *PlatformOptions) Platform {
